@@ -13,9 +13,7 @@ from urllib.request import Request, urlopen, URLError, HTTPError
 from botocore.config import Config
 from botocore.exceptions import ClientError
 from boto3.dynamodb.conditions import Key, Attr
-from messagegenerator import get_message_for_slack, get_org_message_for_slack, get_message_for_chime, \
-    get_org_message_for_chime, \
-    get_message_for_teams, get_org_message_for_teams, get_message_for_email, get_org_message_for_email, \
+from messagegenerator import get_message_for_email, get_org_message_for_email, \
     get_org_message_for_eventbridge, get_message_for_eventbridge
 
 # query active health API endpoint
@@ -45,49 +43,10 @@ def get_account_name(account_id):
     return account_name
 
 def send_alert(event_details, affected_accounts, affected_entities, event_type):
-    slack_url = get_secrets()["slack"]
-    teams_url = get_secrets()["teams"]
-    chime_url = get_secrets()["chime"]
+
     SENDER = os.environ['FROM_EMAIL']
     RECIPIENT = os.environ['TO_EMAIL']
-    event_bus_name = get_secrets()["eventbusname"]
 
-    if "None" not in event_bus_name:
-        try:
-            print("Sending the alert to Event Bridge")
-            send_to_eventbridge(get_message_for_eventbridge(event_details, event_type, affected_accounts, affected_entities), event_type, event_bus_name)
-        except HTTPError as e:
-            print("Got an error while sending message to EventBridge: ", e.code, e.reason)
-        except URLError as e:
-            print("Server connection failed: ", e.reason)
-            pass
-    if "hooks.slack.com/services" in slack_url:
-        try:
-            print("Sending the alert to Slack Webhook Channel")
-            send_to_slack(get_message_for_slack(event_details, event_type, affected_accounts, affected_entities, slack_webhook="webhook"), slack_url)
-        except HTTPError as e:
-            print("Got an error while sending message to Slack: ", e.code, e.reason)
-        except URLError as e:
-            print("Server connection failed: ", e.reason)
-            pass
-    if "hooks.slack.com/workflows" in slack_url:
-        try:
-            print("Sending the alert to Slack Workflows Channel")
-            send_to_slack(get_message_for_slack(event_details, event_type, affected_accounts, affected_entities, slack_webhook="workflow"), slack_url)
-        except HTTPError as e:
-            print("Got an error while sending message to Slack: ", e.code, e.reason)
-        except URLError as e:
-            print("Server connection failed: ", e.reason)
-            pass            
-    if "office.com/webhook" in teams_url:
-        try:
-            print("Sending the alert to Teams")
-            send_to_teams(get_message_for_teams(event_details, event_type, affected_accounts, affected_entities), teams_url)
-        except HTTPError as e:
-            print("Got an error while sending message to Teams: ", e.code, e.reason)
-        except URLError as e:
-            print("Server connection failed: ", e.reason)
-            pass
     # validate sender and recipient's email addresses
     if "none@domain.com" not in SENDER and RECIPIENT:
         try:
@@ -98,69 +57,13 @@ def send_alert(event_details, affected_accounts, affected_entities, event_type):
         except URLError as e:
             print("Server connection failed: ", e.reason)
             pass
-    if "hooks.chime.aws/incomingwebhooks" in chime_url:
-        try:
-            print("Sending the alert to Chime channel")
-            send_to_chime(get_message_for_chime(event_details, event_type, affected_accounts, affected_entities), chime_url)
-        except HTTPError as e:
-            print("Got an error while sending message to Chime: ", e.code, e.reason)
-        except URLError as e:
-            print("Server connection failed: ", e.reason)
-            pass
+   
 
 def send_org_alert(event_details, affected_org_accounts, affected_org_entities, event_type):
-    slack_url = get_secrets()["slack"]
-    teams_url = get_secrets()["teams"]
-    chime_url = get_secrets()["chime"]
+
     SENDER = os.environ['FROM_EMAIL']
     RECIPIENT = os.environ['TO_EMAIL']
-    event_bus_name = get_secrets()["eventbusname"]
 
-    if "None" not in event_bus_name:
-        try:
-            print("Sending the org alert to Event Bridge")
-            send_to_eventbridge(
-                get_org_message_for_eventbridge(event_details, event_type, affected_org_accounts,
-                                                affected_org_entities),
-                event_type, event_bus_name)
-        except HTTPError as e:
-            print("Got an error while sending message to EventBridge: ", e.code, e.reason)
-        except URLError as e:
-            print("Server connection failed: ", e.reason)
-            pass
-    if "hooks.slack.com/services" in slack_url:
-        try:
-            print("Sending the alert to Slack Webhook Channel")
-            send_to_slack(
-                get_org_message_for_slack(event_details, event_type, affected_org_accounts, affected_org_entities, slack_webhook="webhook"),
-                slack_url)
-        except HTTPError as e:
-            print("Got an error while sending message to Slack: ", e.code, e.reason)
-        except URLError as e:
-            print("Server connection failed: ", e.reason)
-            pass
-    if "hooks.slack.com/workflows" in slack_url:
-        try:
-            print("Sending the alert to Slack Workflow Channel")
-            send_to_slack(
-                get_org_message_for_slack(event_details, event_type, affected_org_accounts, affected_org_entities, slack_webhook="workflow"),
-                slack_url)
-        except HTTPError as e:
-            print("Got an error while sending message to Slack: ", e.code, e.reason)
-        except URLError as e:
-            print("Server connection failed: ", e.reason)
-            pass            
-    if "office.com/webhook" in teams_url:
-        try:
-            print("Sending the alert to Teams")
-            send_to_teams(
-                get_org_message_for_teams(event_details, event_type, affected_org_accounts, affected_org_entities),
-                teams_url)
-        except HTTPError as e:
-            print("Got an error while sending message to Teams: ", e.code, e.reason)
-        except URLError as e:
-            print("Server connection failed: ", e.reason)
-            pass
     # validate sender and recipient's email addresses
     if "none@domain.com" not in SENDER and RECIPIENT:
         try:
@@ -171,57 +74,6 @@ def send_org_alert(event_details, affected_org_accounts, affected_org_entities, 
         except URLError as e:
             print("Server connection failed: ", e.reason)
             pass
-    if "hooks.chime.aws/incomingwebhooks" in chime_url:
-        try:
-            print("Sending the alert to Chime channel")
-            send_to_chime(
-                get_org_message_for_chime(event_details, event_type, affected_org_accounts, affected_org_entities),
-                chime_url)
-        except HTTPError as e:
-            print("Got an error while sending message to Chime: ", e.code, e.reason)
-        except URLError as e:
-            print("Server connection failed: ", e.reason)
-            pass
-
-
-def send_to_slack(message, webhookurl):
-    slack_message = message
-    req = Request(webhookurl, data=json.dumps(slack_message).encode("utf-8"),
-                  headers={'content-type': 'application/json'})
-    try:
-        response = urlopen(req)
-        response.read()
-    except HTTPError as e:
-        print("Request failed : ", e.code, e.reason)
-    except URLError as e:
-        print("Server connection failed: ", e.reason, e.reason)
-
-
-def send_to_chime(message, webhookurl):
-    chime_message = {'Content': message}
-    req = Request(webhookurl, data=json.dumps(chime_message).encode("utf-8"),
-                  headers={"content-Type": "application/json"})
-    try:
-        response = urlopen(req)
-        response.read()
-    except HTTPError as e:
-        print("Request failed : ", e.code, e.reason)
-    except URLError as e:
-        print("Server connection failed: ", e.reason, e.reason)
-
-
-def send_to_teams(message, webhookurl):
-    teams_message = message
-    req = Request(webhookurl, data=json.dumps(teams_message).encode("utf-8"),
-                  headers={"content-type": "application/json"})
-    try:
-        response = urlopen(req)
-        response.read()
-    except HTTPError as e:
-        print("Request failed : ", e.code, e.reason)
-    except URLError as e:
-        print("Server connection failed: ", e.reason, e.reason)
-
 
 def send_email(event_details, eventType, affected_accounts, affected_entities):
     SENDER = os.environ['FROM_EMAIL']
@@ -514,15 +366,9 @@ def update_ddb(event_arn, str_update, status_code, event_details, affected_accou
                 print("No new updates found, checking again in 1 minute.")
 
 def get_secrets():
-    secret_teams_name = "MicrosoftChannelID"
-    secret_slack_name = "SlackChannelID"
-    secret_chime_name = "ChimeChannelID"
     region_name = os.environ['AWS_REGION']
     get_secret_value_response_assumerole = ""
     get_secret_value_response_eventbus = ""
-    get_secret_value_response_chime = ""
-    get_secret_value_response_teams = ""
-    get_secret_value_response_slack = ""
     event_bus_name = "EventBusName"
     secret_assumerole_name = "AssumeRoleArn" 
 
@@ -533,54 +379,6 @@ def get_secrets():
         region_name=region_name
     )
     # Iteration through the configured AWS Secrets
-    try:
-        get_secret_value_response_teams = client.get_secret_value(
-            SecretId=secret_teams_name
-        )
-    except ClientError as e:
-        if e.response['Error']['Code'] == 'AccessDeniedException':
-            print("No AWS Secret configured for Teams, skipping")
-            teams_channel_id = "None"
-        else: 
-            print("There was an error with the Teams secret: ",e.response)
-            teams_channel_id = "None"
-    finally:
-        if 'SecretString' in get_secret_value_response_teams:
-            teams_channel_id = get_secret_value_response_teams['SecretString']
-        else:
-            teams_channel_id = "None"
-    try:
-        get_secret_value_response_slack = client.get_secret_value(
-            SecretId=secret_slack_name
-        )
-    except ClientError as e:
-        if e.response['Error']['Code'] == 'AccessDeniedException':
-            print("No AWS Secret configured for Slack, skipping")
-            slack_channel_id = "None"
-        else:    
-            print("There was an error with the Slack secret: ",e.response)
-            slack_channel_id = "None"
-    finally:
-        if 'SecretString' in get_secret_value_response_slack:
-            slack_channel_id = get_secret_value_response_slack['SecretString']
-        else:
-            slack_channel_id = "None"
-    try:
-        get_secret_value_response_chime = client.get_secret_value(
-            SecretId=secret_chime_name
-        )
-    except ClientError as e:
-        if e.response['Error']['Code'] == 'AccessDeniedException':
-            print("No AWS Secret configured for Chime, skipping")
-            chime_channel_id = "None"
-        else:    
-            print("There was an error with the Chime secret: ",e.response)
-            chime_channel_id = "None"
-    finally:
-        if 'SecretString' in get_secret_value_response_chime:
-            chime_channel_id = get_secret_value_response_chime['SecretString']
-        else:
-            chime_channel_id = "None"
     try:
         get_secret_value_response_assumerole = client.get_secret_value(
             SecretId=secret_assumerole_name
@@ -614,15 +412,12 @@ def get_secrets():
         else:
             eventbus_channel_id = "None"            
         secrets = {
-            "teams": teams_channel_id,
-            "slack": slack_channel_id,
-            "chime": chime_channel_id,
             "eventbusname": eventbus_channel_id,
             "ahaassumerole": assumerole_channel_id
         }    
         # uncomment below to verify secrets values
         #print("Secrets: ",secrets)   
-    return secrets
+    return secrets #Retorna apernas as secrets: eventbusname e ahaassumerole
 
 
 def describe_events(health_client):
