@@ -1,0 +1,19 @@
+{
+"clientes": {
+    "xxxx": {
+        "recipients": [
+            "xxxx" 
+        ]
+    },
+    "xxxx": {
+        "recipients" : [
+                "xxxx"
+            ]
+        },
+    "xxxxx": {
+        "recipients" : [
+                "xxxxx"
+            ]
+        }        
+    }
+}
