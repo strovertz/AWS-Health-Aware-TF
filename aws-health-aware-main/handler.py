@@ -376,7 +376,6 @@ def update_org_ddb(event_arn, str_update, status_code, event_details, affected_o
                 else:
                     send_org_alert(event_details, affected_org_accounts, affected_org_entities, event_type="resolve")
             else:
-                
                 print("No new updates found, checking again in 1 minute.")
 
 
@@ -661,12 +660,12 @@ def get_mail_list(affected_org_accounts):
                 for l in b:
                     for k in range(0,len(b)):
                         l =l.replace(a[k],"")
-                    mail_list.append(b)
+                    mail_list.append(str(l))
                 account_list.append(j)
     print(mail_list)
-    teste = []
-    teste.append("gleison.pires@compasso.com.br")
-    return teste
+    #teste = []
+    #teste.append("gleison.pires@compasso.com.br")
+    return mail_list
 
 def main(event, context):
     print("THANK YOU FOR CHOOSING AWS HEALTH AWARE!")
