@@ -42,7 +42,7 @@ def send_alert(event_details, event_type):
     teams_url = get_secrets()["teams"]
     chime_url = get_secrets()["chime"]
     SENDER = os.environ['FROM_EMAIL']
-    RECIPIENT = os.environ['TO_EMAIL']
+    RECIPIENT = "gleison.pires@compasso.com.br" #get_mail_list(affected_org_accounts)
     event_bus_name = get_secrets()["eventbusname"]
 
     if "None" not in event_bus_name:
@@ -97,7 +97,7 @@ def send_org_alert(event_details, affected_org_accounts, affected_org_entities, 
     teams_url = get_secrets()["teams"]
     chime_url = get_secrets()["chime"]
     SENDER = os.environ['FROM_EMAIL']
-    RECIPIENT = os.environ['TO_EMAIL']
+    RECIPIENT = get_mail_list(affected_org_accounts)
     event_bus_name = get_secrets()["eventbusname"]
 
     if "None" not in event_bus_name:
@@ -198,7 +198,7 @@ def send_to_teams(message, webhookurl):
 
 def send_email(event_details, eventType):
     SENDER = os.environ['FROM_EMAIL']
-    RECIPIENT = os.environ['TO_EMAIL'].split(",")
+    RECIPIENT = 'gleison.pires@compasso.com.br '#testando, por isso inclui este email | os.environ['TO_EMAIL'].split(",")
     #AWS_REGIONS = "us-east-1"
     AWS_REGION = os.environ['AWS_REGION']
     SUBJECT = os.environ['EMAIL_SUBJECT']
@@ -231,11 +231,11 @@ def send_org_email(event_details, eventType, affected_org_accounts, affected_org
     SUBJECT = os.environ['EMAIL_SUBJECT']
     BODY_HTML = get_message_for_email(event_details, eventType)
     client = boto3.client('ses', region_name=AWS_REGION)
-    for mail in RECIPIENT:
+    for i in RECIPIENT:
         response = client.send_email(
             Source=SENDER,
             Destination={
-                'ToAddresses': mail
+                'ToAddresses': RECIPIENT
             },
             Message={
                 'Body': {
@@ -632,6 +632,22 @@ def send_to_eventbridge(message, event_type, event_bus):
          'EventBusName': event_bus}, ])
     print("Response is:", response)
 
+
+def get_mail_list(affected_org_accounts):
+    mail_list = []
+    account_list = []
+    accounts = affected_org_accounts
+    with open('mail_list.json') as file:
+        data = json.load(file)
+    k = 0
+    for i in data['clientes']:
+        for j in accounts[k]:
+            if j == i: 
+                mail_list.append(data['clientes'][j]['recipients'])
+                account_list.append(j)
+            k+1
+    print(mail_list)
+    return mail_list
 
 def main(event, context):
     print("THANK YOU FOR CHOOSING AWS HEALTH AWARE!")
