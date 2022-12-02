@@ -15,7 +15,52 @@ Realizamos a aplicação do AWS Health Aware, utilizando o guia fornecido pela A
 
 ## Implementação de envio de emails para contas individualmente:
 
-Atualizações no código e criação de funções em Py para AWS Lambda
+Foi realizada a implementação de uma função que retorna uma lista de email com base nas contas da organização que foram afetadas com a issue 
+```python
+def get_mail_list(affected_org_accounts):
+    mail_list = []
+    account_list = []
+    accounts = affected_org_accounts
+    a = "'[]"
+    with open('mail_list.json') as file:
+        data = json.load(file)
+    for i in data['clientes']:
+        for j in accounts:
+            if j == i:
+                b = data['clientes'][j]['recipients']
+                for l in b:
+                    for k in range(0,len(b)):
+                        l =l.replace(a[k],"")
+                    mail_list.append(str(l))
+                account_list.append(j)
+    print(mail_list)
+    #teste = []
+    #teste.append("none@domain.com.br")
+    return mail_list
+```
+Json Exemplo:
+```json
+{
+"clientes": {
+    "account_idX": {
+        "recipients": [
+            "email1" 
+        ]
+    },
+    "account_idY": {
+        "recipients" : [
+                "email2"
+            ]
+        },
+    "account_idZ": {
+        "recipients" : [
+                "email3"
+            ]
+        }        
+    }
+}
+```
+A função que encaminha os emails recebe em RECIPIENT uma lista de mails retornada pela função e realiza os devidos encaminhamentos, estou estudando e implementando uma função que encaminha o email para cada ID corretamente relacionando o email com o id, a principio acredito que devo implementar uma segunda lista e realizar o encaminhamento a partir de cada um dos indices.
 
 ### To-do List:
 - [x] Implementação e ajustes do TF
