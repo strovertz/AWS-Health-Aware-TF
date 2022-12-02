@@ -6,7 +6,7 @@ O Aws Health Aware realiza a integração da saúde da sua infraestrutura com a 
 ## Implementação: 
 O provisionamento da infraestrutura foi realizado através do terraform disponibilizado, algumas modificações podem ser realizadas para atender as necessidades individuais de cada organização.
 
->O "FROM = os.environ["FROM_EMAIL"]" que encaminha os avisos é definido nas variáveis de ambiente da função lambda.
+>O "FROM = os.environ["FROM_EMAIL"]" que encaminha os avisos é definido nas variáveis de ambiente da função lambda. \br
 >Já o RECIPIENT foi implementado com uma fução alternativa que ainda está em melhoria para atender as necessidades individuais do ambiente.
 
 Realizamos a aplicação do AWS Health Aware, utilizando o guia fornecido pela AWS, com a seguinte infraestrutura: 
