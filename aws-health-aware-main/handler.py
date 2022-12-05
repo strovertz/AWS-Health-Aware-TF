@@ -650,13 +650,20 @@ def get_mail_list(affected_org_accounts):
     account_list = []
     accounts = affected_org_accounts
     a = "'[]"
-    print("\nLer aqui4: %s", accounts)
-    with open('mail_list.json') as file:
-        data = json.load(file)
-    for i in data['clientes']:
+    #VARS
+    FILE_NAME = os.environ['FILE_NAME'] #"mail_list.json"
+    BUCKET_NAME = os.environ['BUCKET_NAME'] #"s3-compass-uol-aha-contacts"
+    
+    s3 = boto3.resource('s3')
+    obj = s3.Object(bucket_name, file_name)
+    file_content = obj.get()['Body'].read().decode('utf-8')
+    json_content = json.loads(file_content)
+
+    for i in json_content['clientes']:
         for j in accounts:
             if j == i:
-                b = data['clientes'][j]['recipients']
+                print(j)
+                b = json_content['clientes'][j]['recipients']
                 for l in b:
                     for k in range(0,len(b)):
                         l =l.replace(a[k],"")

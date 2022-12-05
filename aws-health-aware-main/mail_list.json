@@ -12,7 +12,7 @@
         },
     "account_idZ": {
         "recipients" : [
-                "email3"
+                "email3", "email3.2"
             ]
         }        
     }
