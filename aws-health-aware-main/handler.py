@@ -651,11 +651,11 @@ def get_mail_list(affected_org_accounts):
     accounts = affected_org_accounts
     a = "'[]"
     #VARS
-    FILE_NAME = os.environ['FILE_NAME'] #"mail_list.json"
-    BUCKET_NAME = os.environ['BUCKET_NAME'] #"s3-compass-uol-aha-contacts"
+    FILE_NAME = os.environ['FILE_NAME']
+    BUCKET_NAME = os.environ['BUCKET_NAME']
     
     s3 = boto3.resource('s3')
-    obj = s3.Object(bucket_name, file_name)
+    obj = s3.Object(BUCKET_NAME, FILE_NAME)
     file_content = obj.get()['Body'].read().decode('utf-8')
     json_content = json.loads(file_content)
 
@@ -670,8 +670,6 @@ def get_mail_list(affected_org_accounts):
                     mail_list.append(str(l))
                 account_list.append(j)
     print(mail_list)
-    #teste = []
-    #teste.append("gleison.pires@compasso.com.br")
     return mail_list
 
 def main(event, context):
