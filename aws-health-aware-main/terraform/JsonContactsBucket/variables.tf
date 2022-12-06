@@ -1,8 +1,11 @@
-variable "bucket_name" {}
+variable "bucket_name" {
+    type = "string"
+    default = "aha-jsoncontatcs"
+}
 
 variable "acl_value" {
 
-    default = "aha-jsoncontacts"
+    default = "private"
 
 variable "aws_region" {
   type        = string
