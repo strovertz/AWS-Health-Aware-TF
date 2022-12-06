@@ -1,0 +1,19 @@
+{
+"clientes": {
+    "account_idX": {
+        "recipients": [
+            "email1" 
+        ]
+    },
+    "account_idY": {
+        "recipients" : [
+                "email2"
+            ]
+        },
+    "account_idZ": {
+        "recipients" : [
+                "email3", "email3.2"
+            ]
+        }        
+    }
+}
