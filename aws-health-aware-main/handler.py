@@ -41,7 +41,7 @@ def send_alert(event_details, event_type):
     teams_url = get_secrets()["teams"]
     chime_url = get_secrets()["chime"]
     SENDER = os.environ['FROM_EMAIL']
-    RECIPIENT = "gleison.pires@compasso.com.br" #get_mail_list(affected_org_accounts)
+    RECIPIENT = "testemail@domainname.com.br" #get_mail_list(affected_org_accounts)
     event_bus_name = get_secrets()["eventbusname"]
 
     if "None" not in event_bus_name:
@@ -74,8 +74,6 @@ def send_alert(event_details, event_type):
     # validate sender and recipient's email addresses
     if "none@domain.com" not in SENDER and RECIPIENT:
         try:
-            print("\nLer aqui9: %s", affected_org_accounts)
-
             print("Sending the alert to the emails")
             send_email(event_details, event_type)
         except HTTPError as e:
@@ -204,8 +202,8 @@ def send_email(event_details, eventType):
     SENDER = os.environ['FROM_EMAIL']
     print("\nLer aqui2: %s", event_details)
     lista = []
-    lista.append("gleison.pires@compasso.com.br")
-    RECIPIENT = lista #  'gleison.pires@compasso.com.br '#testando, por isso inclui este email | os.environ['TO_EMAIL'].split(",")
+    lista.append("testmail@domainname.com.br") #Realizar ajustes aqui
+    RECIPIENT = lista 
     #AWS_REGIONS = "us-east-1"
     AWS_REGION = os.environ['AWS_REGION']
     SUBJECT = os.environ['EMAIL_SUBJECT']
@@ -238,12 +236,9 @@ def send_org_email(event_details, eventType, affected_org_accounts, affected_org
     #AWS_REGIONS = "us-east-1"
     AWS_REGION = os.environ['AWS_REGION']
     SUBJECT = os.environ['EMAIL_SUBJECT']
-    print("\nchega aqui")
-    BODY_HTML = get_message_for_email(event_details, eventType)
-    print("\nchega aqui")
+    BODY_HTML = get_org_message_for_email(event_details, eventType, affected_org_accounts, affected_org_entities)
 
     client = boto3.client('ses', region_name=AWS_REGION)
-    #for i in RECIPIENT:
     response = client.send_email(
         Source=SENDER,
         Destination={

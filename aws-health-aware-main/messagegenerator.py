@@ -11,7 +11,7 @@ def get_message_for_slack(event_details, event_type):
     summary = ""
     if event_type == "create":
         summary += (
-            f":rotating_light:*[NEW] AWS Health Compasso Interno(190) reported an issue with the {event_details['successfulSet'][0]['event']['service'].upper()} service in "
+            f":rotating_light:*[NEW] AWS Health your name here reported an issue with the {event_details['successfulSet'][0]['event']['service'].upper()} service in "
             f"the {event_details['successfulSet'][0]['event']['region'].upper()} region.*"
         )
         message = {
@@ -35,7 +35,7 @@ def get_message_for_slack(event_details, event_type):
 
     elif event_type == "resolve":
         summary += (
-            f":heavy_check_mark:*[RESOLVED] The AWS Health Compasso Interno(190) issue with the {event_details['successfulSet'][0]['event']['service'].upper()} service in "
+            f":heavy_check_mark:*[RESOLVED] The AWS Health your name here issue with the {event_details['successfulSet'][0]['event']['service'].upper()} service in "
             f"the {event_details['successfulSet'][0]['event']['region'].upper()} region is now resolved.*"
         )
         message = {
@@ -165,7 +165,7 @@ def get_org_message_for_slack(event_details, event_type, affected_org_accounts, 
         affected_org_accounts = "All accounts\nin region"
     if event_type == "create":
         summary += (
-            f":rotating_light:*[NEW] AWS Health Compasso Interno(190) reported an issue with the {event_details['successfulSet'][0]['event']['service'].upper()} service in "
+            f":rotating_light:*[NEW] AWS Health your name here reported an issue with the {event_details['successfulSet'][0]['event']['service'].upper()} service in "
             f"the {event_details['successfulSet'][0]['event']['region'].upper()} region.*"
         )
         message = {
@@ -189,7 +189,7 @@ def get_org_message_for_slack(event_details, event_type, affected_org_accounts, 
 
     elif event_type == "resolve":
         summary += (
-            f":heavy_check_mark:*[RESOLVED] The AWS Health Compasso Interno(190) issue with the {event_details['successfulSet'][0]['event']['service'].upper()} service in "
+            f":heavy_check_mark:*[RESOLVED] The AWS Health your name here issue with the {event_details['successfulSet'][0]['event']['service'].upper()} service in "
             f"the {event_details['successfulSet'][0]['event']['region'].upper()} region is now resolved.*"
         )
         message = {
@@ -221,7 +221,7 @@ def get_message_for_chime(event_details, event_type):
     summary = ""
     if event_type == "create":
 
-        message = str("/md" + "\n" + "**:rotating_light:\[NEW\] AWS Health Compasso Interno(190) reported an issue with the " + event_details['successfulSet'][0]['event']['service'].upper() +  " service in " + event_details['successfulSet'][0]['event']['region'].upper() + " region.**" + "\n"
+        message = str("/md" + "\n" + "**:rotating_light:\[NEW\] AWS Health your name here reported an issue with the " + event_details['successfulSet'][0]['event']['service'].upper() +  " service in " + event_details['successfulSet'][0]['event']['region'].upper() + " region.**" + "\n"
           "---" + "\n"
           "**Account(s)**: " + "All accounts in region" + "\n"
           "**Resource(s)**: " + "All resources in region" + "\n"
@@ -235,7 +235,7 @@ def get_message_for_chime(event_details, event_type):
 
     elif event_type == "resolve":
 
-        message = str("/md" + "\n" + "**:heavy_check_mark:\[RESOLVED\] The AWS Health Compasso Interno(190) issue with the " + event_details['successfulSet'][0]['event']['service'].upper() +  " service in " + event_details['successfulSet'][0]['event']['region'].upper() + " region is now resolved.**" + "\n"
+        message = str("/md" + "\n" + "**:heavy_check_mark:\[RESOLVED\] The AWS Health your name here issue with the " + event_details['successfulSet'][0]['event']['service'].upper() +  " service in " + event_details['successfulSet'][0]['event']['region'].upper() + " region is now resolved.**" + "\n"
           "---" + "\n"
           "**Account(s)**: " + "All accounts in region" + "\n"
           "**Resource(s)**: " + "All resources in region" + "\n"
@@ -265,7 +265,7 @@ def get_org_message_for_chime(event_details, event_type, affected_org_accounts, 
         affected_org_accounts = "All accounts in region"
     if event_type == "create":
         
-        message = str("/md" + "\n" + "**:rotating_light:\[NEW\] AWS Health Compasso Interno(190) reported an issue with the " + event_details['successfulSet'][0]['event']['service'].upper()) +  " service in " + str(event_details['successfulSet'][0]['event']['region'].upper() + " region**" + "\n"
+        message = str("/md" + "\n" + "**:rotating_light:\[NEW\] AWS Health your name here reported an issue with the " + event_details['successfulSet'][0]['event']['service'].upper()) +  " service in " + str(event_details['successfulSet'][0]['event']['region'].upper() + " region**" + "\n"
           "---" + "\n"
           "**Account(s)**: " + affected_org_accounts + "\n"
           "**Resource(s)**: " + affected_org_entities + "\n"
@@ -279,7 +279,7 @@ def get_org_message_for_chime(event_details, event_type, affected_org_accounts, 
 
     elif event_type == "resolve":
 
-        message = str("/md" + "\n" + "**:heavy_check_mark:\[RESOLVED\] The AWS Health Compasso Interno(190) issue with the " + event_details['successfulSet'][0]['event']['service'].upper()) +  " service in " + str(event_details['successfulSet'][0]['event']['region'].upper() + " region is now resolved.**" + "\n"
+        message = str("/md" + "\n" + "**:heavy_check_mark:\[RESOLVED\] The AWS Health your name here issue with the " + event_details['successfulSet'][0]['event']['service'].upper()) +  " service in " + str(event_details['successfulSet'][0]['event']['region'].upper() + " region is now resolved.**" + "\n"
           "---" + "\n"
           "**Account(s)**: " + affected_org_accounts + "\n"
           "**Resource(s)**: " + affected_org_entities + "\n"
@@ -300,7 +300,7 @@ def get_message_for_teams(event_details, event_type):
     message = ""
     summary = ""
     if event_type == "create":
-        title = "&#x1F6A8; [NEW] AWS Health reported an issue with the " + event_details['successfulSet'][0]['event'][
+        title = "&#x1F6A8; [NEW] AWS Health your name here reported an issue with the " + event_details['successfulSet'][0]['event'][
             'service'].upper() + " service in the " + event_details['successfulSet'][0]['event'][
                     'region'].upper() + " region."
         message = {
@@ -327,7 +327,7 @@ def get_message_for_teams(event_details, event_type):
         }
 
     elif event_type == "resolve":
-        title = "&#x2705; [RESOLVED] The AWS Health Compasso Interno(190) issue with the " + event_details['successfulSet'][0]['event'][
+        title = "&#x2705; [RESOLVED] The AWS Health your name here issue with the " + event_details['successfulSet'][0]['event'][
             'service'].upper() + " service in the " + event_details['successfulSet'][0]['event'][
                     'region'].upper() + " region is now resolved."
         message = {
@@ -369,7 +369,7 @@ def get_org_message_for_teams(event_details, event_type, affected_org_accounts, 
     else:
         affected_org_accounts = "All accounts in region"
     if event_type == "create":
-        title = "&#x1F6A8; [NEW] AWS Health Compasso Interno(190) reported an issue with the " + event_details['successfulSet'][0]['event'][
+        title = "&#x1F6A8; [NEW] AWS Health your name here reported an issue with the " + event_details['successfulSet'][0]['event'][
             'service'].upper() + " service in the " + event_details['successfulSet'][0]['event'][
                     'region'].upper() + " region."
         message = {
@@ -396,7 +396,7 @@ def get_org_message_for_teams(event_details, event_type, affected_org_accounts, 
         }
 
     elif event_type == "resolve":
-        title = "&#x2705; [RESOLVED] The AWS Health Compasso Interno(190) issue with the " + event_details['successfulSet'][0]['event'][
+        title = "&#x2705; [RESOLVED] The AWS Health your name here Aware issue with the " + event_details['successfulSet'][0]['event'][
             'service'].upper() + " service in the " + event_details['successfulSet'][0]['event'][
                     'region'].upper() + " region is now resolved."
         message = {
@@ -431,7 +431,7 @@ def get_message_for_email(event_details, event_type):
         BODY_HTML = f"""
         <html>
             <body>
-                <h>Greetings from AWS Health Compasso Interno(190) Aware,</h><br>
+                <h>Greetings from AWS Health your name here Aware,</h><br>
                 <p>There is an AWS incident that is in effect which may likely impact your resources. Here are the details:<br><br>
                 <b>Account(s):</b> All accounts in region<br>
                 <b>Resource(s):</b> All service related resources in region<br>
@@ -452,7 +452,7 @@ def get_message_for_email(event_details, event_type):
         BODY_HTML = f"""
         <html>
             <body>
-                <h>Greetings again from AWS Health Compasso Interno(190) Aware,</h><br>
+                <h>Greetings again from AWS Health your name here Aware,</h><br>
                 <p>Good news! The AWS Health incident from earlier has now been marked as resolved.<br><br>
                 <b>Account(s):</b> All accounts in region<br>
                 <b>Resource(s):</b>   All service related resources in region<br>                         
@@ -487,7 +487,7 @@ def get_org_message_for_email(event_details, event_type, affected_org_accounts, 
         BODY_HTML = f"""
         <html>
             <body>
-                <h>Greetings from AWS Health Compasso Interno(190) Aware,</h><br>
+                <h>Greetings from AWS Health your name here Aware,</h><br>
                 <p>There is an AWS incident that is in effect which may likely impact your resources. Here are the details:<br><br>
                 <b>Account(s):</b> {affected_org_accounts}<br>
                 <b>Resource(s):</b> {affected_org_entities}<br>
@@ -508,7 +508,7 @@ def get_org_message_for_email(event_details, event_type, affected_org_accounts, 
         BODY_HTML = f"""
         <html>
             <body>
-                <h>Greetings again from AWS Compasso Interno(190) Health Aware,</h><br>
+                <h>Greetings again from AWS Health your name here Aware,</h><br>
                 <p>Good news! The AWS Health incident from earlier has now been marked as resolved.<br><br>
                 <b>Account(s):</b> {affected_org_accounts}<br>
                 <b>Resource(s):</b> {affected_org_entities}<br>                            
