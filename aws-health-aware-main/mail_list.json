@@ -2,17 +2,17 @@
 "clientes": {
     "account_idX": {
         "recipients": [
-            "email1" 
+            "sampleMail@none.com.br" 
         ]
     },
     "account_idY": {
         "recipients" : [
-                "email2"
+                "sampleMail2@none.com.br"
             ]
         },
     "account_idZ": {
         "recipients" : [
-                "email3", "email3.2"
+                "sampleMail@none.com.br", "sampleMail2@none.com.br"
             ]
         }        
     }

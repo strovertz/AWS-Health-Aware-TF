@@ -47,3 +47,33 @@ resource "aws_dynamodb_tag" "AHA-GlobalDynamoDBTable-Additional-tags" {
     key          = each.key
     value        = each.value
 }
+
+# DynamoDB table - Create if secondary region not set
+resource "aws_dynamodb_table" "AHA-DynamoDBTable" {
+    count = "${var.aha_secondary_region == "" ? 1 : 0}"
+    billing_mode   = "PROVISIONED"
+    hash_key       = "arn"
+    name           = "${var.dynamodbtable}-${random_string.resource_code.result}"
+    read_capacity  = 5
+    write_capacity = 5
+    stream_enabled = false
+    tags           = {
+       Name   = "${var.dynamodbtable}"
+    }
+
+    attribute {
+        name = "arn"
+        type = "S"
+    }
+
+    point_in_time_recovery {
+        enabled = false
+    }
+
+    timeouts {}
+
+    ttl {
+        attribute_name = "ttl"
+        enabled        = true
+    }
+}

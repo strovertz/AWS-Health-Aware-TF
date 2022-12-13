@@ -49,32 +49,27 @@ resource "aws_s3_object" "AHA-S3Object-SecondaryRegion" {
     }
 }
 
-# DynamoDB table - Create if secondary region not set
-resource "aws_dynamodb_table" "AHA-DynamoDBTable" {
-    count = "${var.aha_secondary_region == "" ? 1 : 0}"
-    billing_mode   = "PROVISIONED"
-    hash_key       = "arn"
-    name           = "${var.dynamodbtable}-${random_string.resource_code.result}"
-    read_capacity  = 5
-    write_capacity = 5
-    stream_enabled = false
-    tags           = {
-       Name   = "${var.dynamodbtable}"
-    }
+resource "aws_s3_bucket" "contactsaha" {
+  bucket = "aha-contacts-bucket-${var.aha_primary_region}-${random_string.resource_code.result}"
 
-    attribute {
-        name = "arn"
-        type = "S"
-    }
+  versioning {
+    enabled = true
+  }
 
-    point_in_time_recovery {
-        enabled = false
-    }
+  tags = {
+    Name        = "AHA Contacts Bucket"
+  }
+}
 
-    timeouts {}
+resource "aws_s3_bucket_acl" "contactscl" {
+  bucket = aws_s3_bucket.contactsaha.id
+  acl    = "private"
+}
 
-    ttl {
-        attribute_name = "ttl"
-        enabled        = true
-    }
+resource "aws_s3_bucket_object" "object" {
+  bucket       = aws_s3_bucket.contactsaha.bucket
+  key          = "config/contacts"
+  source       = "data/mail_list.json"
+# Dados para aplicacao de arquivo no bucket
+  tags = local.common_tags
 }
