@@ -224,58 +224,39 @@ def send_email(event_details, eventType):
 
 def send_org_email(event_details, eventType, affected_org_accounts, affected_org_entities):
     SENDER = os.environ['FROM_EMAIL']
+    k = 0
+    x = len(affected_org_accounts)
     for i in affected_org_accounts: #Para evitar de encaminhar para o cliente alguma conta que não pertence a organização dele, remover e "reidentar" em caso do cliente ter payer propria
-        if len(i) > 11:
-            i = i.split()
-            for j in i:
-                RECIPIENT = get_mail_list(affected_org_accounts)
-                print("\nLer aqui1: %s", affected_org_accounts)
-                AWS_REGION = os.environ['AWS_REGION']
-                SUBJECT = os.environ['EMAIL_SUBJECT']
-                BODY_HTML = get_org_message_for_email(event_details, eventType, affected_org_accounts, affected_org_entities)
-                client = boto3.client('ses', region_name=AWS_REGION)
-                response = client.send_email(
-                    Source=SENDER,
-                    Destination={
-                        'ToAddresses': RECIPIENT
-                    },
-                    Message={
-                        'Body': {
-                            'Html': {
-                                'Data': BODY_HTML
-                            },
-                        },
-                        'Subject': {
-                            'Charset': 'UTF-8',
-                            'Data': SUBJECT,
-                        },
-                    },
-                )
-        else:
-            RECIPIENT = get_mail_list(affected_org_accounts)
-            print("\nLer aqui1: %s", affected_org_accounts)
-            #AWS_REGIONS = "us-east-1"
-            AWS_REGION = os.environ['AWS_REGION']
-            SUBJECT = os.environ['EMAIL_SUBJECT']
-            BODY_HTML = get_org_message_for_email(event_details, eventType, affected_org_accounts, affected_org_entities)
-            client = boto3.client('ses', region_name=AWS_REGION)
-            response = client.send_email(
-                Source=SENDER,
-                Destination={
-                    'ToAddresses': RECIPIENT
-                },
-                Message={
-                    'Body': {
-                        'Html': {
-                            'Data': BODY_HTML
-                        },
-                    },
-                    'Subject': {
-                        'Charset': 'UTF-8',
-                        'Data': SUBJECT,
+        l = []
+        l.append(i)
+        RECIPIENT = get_mail_list(l)
+        print(get_mail_list(affected_org_accounts))
+        #AWS_REGIONS = "us-east-1"
+        AWS_REGION = os.environ['AWS_REGION']
+        SUBJECT = os.environ['EMAIL_SUBJECT']
+        bckp = affected_org_accounts
+        #affected_org_accounts = i[0]
+        print(RECIPIENT)
+        print("Verify Here")
+        BODY_HTML = get_org_message_for_email(event_details, eventType, l, affected_org_entities)
+        client = boto3.client('ses', region_name=AWS_REGION)
+        response = client.send_email(
+            Source=SENDER,
+            Destination={
+                'ToAddresses': RECIPIENT
+            },
+            Message={
+                'Body': {
+                    'Html': {
+                        'Data': BODY_HTML
                     },
                 },
-            )
+                'Subject': {
+                    'Charset': 'UTF-8',
+                    'Data': SUBJECT,
+                },
+            },
+        )
 
 
 # organization view affected accounts
@@ -391,7 +372,7 @@ def update_org_ddb(event_arn, str_update, status_code, event_details, affected_o
                 else:
                     send_org_alert(event_details, affected_org_accounts, affected_org_entities, event_type="resolve")
             else:
-#                send_org_alert(event_details, affected_org_accounts, affected_org_entities, event_type="create") #DESCOMENTAR APENAS PARA TESTES!!!
+                #send_org_alert(event_details, affected_org_accounts, affected_org_entities, event_type="create") #DESCOMENTAR APENAS PARA TESTES!!!
                 
                 print("No new updates found, checking again in 1 minute.")
 

@@ -443,7 +443,7 @@ def get_message_for_email(event_details, event_type):
                 <b>Updates:</b> {event_details['successfulSet'][0]['eventDescription']['latestDescription']}<br><br>
                 For updates, please visit the <a href=https://status.aws.amazon.com>AWS Service Health Dashboard</a><br>
                 If you are experiencing issues related to this event, please open an <a href=https://console.aws.amazon.com/support/home>AWS Support</a> case within your account.<br><br>
-                Thanks, <br><br>AHA: AWS Health Aware
+                Thanks, <br><br>Your Account Manager
                 </p>
             </body>
         </html>
@@ -465,7 +465,7 @@ def get_message_for_email(event_details, event_type):
                 <b>Updates:</b> {event_details['successfulSet'][0]['eventDescription']['latestDescription']}<br><br>  
                 If you are still experiencing issues related to this event, please open an <a href=https://console.aws.amazon.com/support/home>AWS Support</a> case within your account.<br><br>                
                 <br><br>
-                Thanks, <br><br>AHA: AWS Health Aware
+                Thanks, <br><br>Your Account Manager
                 </p>
             </body>
         </html>
