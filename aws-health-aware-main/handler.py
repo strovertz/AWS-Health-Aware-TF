@@ -737,6 +737,5 @@ def main(event, context):
         else:
             print("No events found in time frame, checking again in 1 minute.")
 
-
 if __name__ == "__main__":
     main('', '')
